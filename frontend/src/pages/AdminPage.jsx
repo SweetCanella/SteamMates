@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import api from "../api/client.js";
 import { useAuth } from "../context/AuthContext.jsx";
+import manImg from "../../img/man.png";
 
 export default function AdminPage() {
   const { user: currentUser } = useAuth();
@@ -9,6 +10,13 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [busyId, setBusyId] = useState(null);
+  const [showMan, setShowMan] = useState(true);
+
+  useEffect(() => {
+    // 10 сек выезжает + 2 сек висит + 5 сек растворяется
+    const t = setTimeout(() => setShowMan(false), 17000);
+    return () => clearTimeout(t);
+  }, []);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -107,23 +115,25 @@ export default function AdminPage() {
                         {u.is_active ? "активен" : "заблокирован"}
                       </span>
                     </td>
-                    <td className="actions">
-                      <button
-                        type="button"
-                        className="btn btn--ghost"
-                        disabled={disabled || isSelf}
-                        onClick={() => patchUser(u.id, { is_active: !u.is_active })}
-                      >
-                        {u.is_active ? "Заблокировать" : "Разблокировать"}
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn--danger"
-                        disabled={disabled || isSelf}
-                        onClick={() => deleteUser(u.id)}
-                      >
-                        Удалить
-                      </button>
+                    <td>
+                      <div className="actions">
+                        <button
+                          type="button"
+                          className="btn btn--ghost"
+                          disabled={disabled || isSelf}
+                          onClick={() => patchUser(u.id, { is_active: !u.is_active })}
+                        >
+                          {u.is_active ? "Заблокировать" : "Разблокировать"}
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn--danger"
+                          disabled={disabled || isSelf}
+                          onClick={() => deleteUser(u.id)}
+                        >
+                          Удалить
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
@@ -132,6 +142,8 @@ export default function AdminPage() {
           </table>
         </div>
       )}
+
+      {showMan && <img src={manImg} alt="" className="peek-man" />}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
+import PasswordInput from "../components/PasswordInput.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 
 export default function LoginPage() {
@@ -19,7 +20,7 @@ export default function LoginPage() {
     setSubmitting(true);
     try {
       await login(username, password);
-      const redirect = location.state?.from?.pathname || "/dashboard";
+      const redirect = location.state?.from?.pathname || "/forms";
       navigate(redirect, { replace: true });
     } catch (err) {
       setError(err.response?.data?.detail || "Не удалось войти");
@@ -44,8 +45,7 @@ export default function LoginPage() {
         </label>
         <label className="form__field">
           <span>Пароль</span>
-          <input
-            type="password"
+          <PasswordInput
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="current-password"

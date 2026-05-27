@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import PasswordInput from "../components/PasswordInput.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 
 export default function RegisterPage() {
@@ -19,7 +20,7 @@ export default function RegisterPage() {
     setSubmitting(true);
     try {
       await register(username, email, password);
-      navigate("/dashboard", { replace: true });
+      navigate("/forms", { replace: true });
     } catch (err) {
       setError(err.response?.data?.detail || "Не удалось зарегистрироваться");
     } finally {
@@ -54,8 +55,7 @@ export default function RegisterPage() {
         </label>
         <label className="form__field">
           <span>Пароль</span>
-          <input
-            type="password"
+          <PasswordInput
             minLength={6}
             value={password}
             onChange={(e) => setPassword(e.target.value)}

@@ -16,6 +16,11 @@ class Settings(BaseSettings):
     default_admin_email: str = "admin@example.com"
     default_admin_password: str = "admin123"
 
+    # Ключ Steam Web API (https://steamcommunity.com/dev/apikey). Без него /api/steam/* не работает
+    steam_api_key: str = ""
+    # минимальный playtime в минутах, чтобы игра попала в статистику (10 часов = 600 минут)
+    steam_min_playtime_minutes: int = 600
+
     cors_origins: list[str] = [
         "http://localhost:5173",
         "http://127.0.0.1:5173",
